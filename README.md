@@ -19,7 +19,7 @@ Official implementation, evaluation pipeline, Grad-CAM interpretability tools, a
 
 1. **Dual-Path Preprocessing & Contrast-Aware Gate (CAG):**
    - Processes both **LAB-CLAHE enhanced** ($L^*$ luminance equalization, $\rho_{\text{clip}}=3.0$, $8\times 8$ grid) and **raw** RGB inputs through independent convolutional stems.
-   - Computes a learned channel-wise gate $\mathbf{g} \in [0,1]^{64}$ from the per-channel absolute difference $\lvert \mathbf{F}_{\text{enh}} - \mathbf{F}_{\text{raw}} \rvert$ to adaptively weight contrast-enhanced features against raw mucosal features, preventing noise amplification on well-illuminated captures.
+   - - Computes a learned channel-wise gate $\mathbf{g} \in [0,1]^{64}$ from the per-channel absolute difference $|\mathbf{F}_{\text{enh}} - \mathbf{F}_{\text{raw}}|$ to adaptively weight contrast-enhanced features against raw mucosal features, preventing noise amplification on well-lit captures.
 2. **Selective Layer Recalibration (SLR):**
    - Lightweight Squeeze-and-Excitation recalibration modules inserted after ResNet50 Stages 2, 3, and 4 to suppress over-enhanced channels prior to spatial downsampling.
 3. **Morphology-Aware Auxiliary Head (MAAH):**

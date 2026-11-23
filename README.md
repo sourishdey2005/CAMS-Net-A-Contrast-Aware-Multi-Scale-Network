@@ -1,38 +1,50 @@
 # CAMS-Net: Contrast-Aware Multi-Scale Network with Morphology-Guided Training for Early Oral Malignancy Triage
 
-[![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
-[![PyTorch 2.0](https://img.shields.io/badge/PyTorch-2.0-ee4c2c.svg)](https://pytorch.org/)
-[![Dataset](https://img.shields.io/badge/Dataset-Mendeley%20Oral%20Images%20(N%3D323)-green.svg)](https://doi.org/10.17632/6v83j8y3xj.1)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<p align="center">
+  <img width="220" height="220" alt="CAMS-Net Logo" src="https://github.com/user-attachments/assets/84d5afb1-b07c-4237-a0d0-b1d0b1f2132e" />
+</p>
 
-Official implementation, evaluation scripts, Grad-CAM interpretability tools, and publication assets for **CAMS-Net**, a transfer-learning framework designed for low-resource, smartphone-based binary triage (Benign vs. Malignant) of oral potentially malignant disorders (OPMDs) and oral squamous cell carcinoma (OSCC).
+<p align="center">
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.9%2B-blue.svg" alt="Python 3.9+"></a>
+  <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.0-ee4c2c.svg" alt="PyTorch 2.0"></a>
+  <a href="https://doi.org/10.17632/6v83j8y3xj.1"><img src="https://img.shields.io/badge/Dataset-Mendeley%20Oral%20Images%20(N%3D323)-green.svg" alt="Dataset"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+</p>
+
+Official implementation, evaluation pipeline, Grad-CAM interpretability tools, and publication assets for **CAMS-Net**, a transfer-learning framework engineered for low-resource, smartphone-based binary triage (**Benign** vs. **Malignant**) of oral potentially malignant disorders (OPMDs) and oral squamous cell carcinoma (OSCC).
 
 ---
 
 ## Key Contributions
 
-<img width="512" height="512" alt="5c82acc8-c07c-4fb1-8313-50a59f2576f5" src="https://github.com/user-attachments/assets/84d5afb1-b07c-4237-a0d0-b1d0b1f2132e" />
-<img width="2000" height="1600" alt="oral_cancer_grid_4x5_raw" src="https://github.com/user-attachments/assets/d15980bc-3b61-4b4b-8ee0-b731b45ee5f5" />
-<img width="2000" height="1600" alt="oral_cancer_grid_4x5_predicted" src="https://github.com/user-attachments/assets/febddf05-5dbf-4683-a139-37ac3a7d6bd2" />
-
-
 1. **Dual-Path Preprocessing & Contrast-Aware Gate (CAG):**
-   - Processes both **LAB-CLAHE enhanced** ($L^*$ luminance equalization, $\rho_{\text{clip}}=3.0$, $8\times 8$ grid) and **raw** RGB images through independent convolutional stems.
-   - Computes a learned channel-wise gate $\mathbf{g} \in [0,1]^{64}$ from the per-channel absolute difference $\vert{}\mathbf{F}_{\text{enh}} - \mathbf{F}_{\text{raw}}\vert{}$ to adaptively weight contrast-enhanced features against raw mucosal features, preventing noise amplification on well-lit captures.
+   - Processes both **LAB-CLAHE enhanced** ($L^*$ luminance equalization, $\rho_{\text{clip}}=3.0$, $8\times 8$ grid) and **raw** RGB inputs through independent convolutional stems.
+   - Computes a learned channel-wise gate $\mathbf{g} \in [0,1]^{64}$ from the per-channel absolute difference $\lvert \mathbf{F}_{\text{enh}} - \mathbf{F}_{\text{raw}} \rvert$ to adaptively weight contrast-enhanced features against raw mucosal features, preventing noise amplification on well-illuminated captures.
 2. **Selective Layer Recalibration (SLR):**
-   - Lightweight Squeeze-and-Excitation recalibration modules placed after ResNet50 Stages 2, 3, and 4 to suppress over-enhanced channels prior to spatial downsampling.
+   - Lightweight Squeeze-and-Excitation recalibration modules inserted after ResNet50 Stages 2, 3, and 4 to suppress over-enhanced channels prior to spatial downsampling.
 3. **Morphology-Aware Auxiliary Head (MAAH):**
-   - Training-time multi-task regression branch ($\lambda_{\text{aux}} = 0.1$) supervising Layer4 representations against four quantitative tissue texture descriptors: **LBP uniformity**, **Gabor energy**, **Sobel edge magnitude**, and **2D FFT high-frequency energy**. Detached at inference for **zero latency overhead**.
+   - Training-time multi-task regression branch ($\lambda_{\text{aux}} = 0.1$) supervising Layer4 representations against four quantitative tissue texture descriptors: **LBP uniformity**, **Gabor energy**, **Sobel edge magnitude**, and **2D FFT high-frequency energy**. Completely detached at inference for **zero latency overhead**.
 4. **Triage-Oriented Operating-Point Selection:**
-   - Sensitivity-constrained threshold optimization ($\tau^* = 0.40$ for $S_{\min} = 0.90$) yielding **91.05% sensitivity** and **78.64% specificity** without model retraining.
+   - Sensitivity-constrained threshold optimization ($\tau^* = 0.40$ for $S_{\min} = 0.90$) achieving **91.05% sensitivity** and **78.64% specificity** without model retraining.
+
+---
+
+## Qualitative Grad-CAM Lesion Localization ($4 \times 5$ Cohort Grid)
+
+Comparison across **20 representative patient cases** (balanced across Benign and Malignant classes from the Mendeley Oral Images Dataset) illustrating CAMS-Net's spatial localization and contour delineation ($\text{CAM} \ge 0.55$):
+
+| Raw Clinical Inputs ($2000 \times 1600$ px) | CAMS-Net Triage Predictions & Grad-CAM Contours ($2000 \times 1600$ px) |
+| :---: | :---: |
+| <img width="100%" alt="Raw Oral Cavity Input Grid (4x5)" src="https://github.com/user-attachments/assets/d15980bc-3b61-4b4b-8ee0-b731b45ee5f5" /> | <img width="100%" alt="Predicted Triage & Grad-CAM Grid (4x5)" src="https://github.com/user-attachments/assets/febddf05-5dbf-4683-a139-37ac3a7d6bd2" /> |
+| *Spatially aligned $224 \times 224$ center-cropped raw RGB photographs showing intraoral lighting and mucosal variation.* | *Binary triage headers (`BENIGN` / `MALIGNANT`), Layer4 Grad-CAM overlays, and red–yellow contours delineating predicted malignant lesions.* |
 
 ---
 
 ## Performance Summary (Patient-Level 5-Fold Cross-Validation, $N=323$)
 
-Evaluated on **323 biopsy-verified images from 323 unique patients** (patient-disjoint splits, no pre-augmented duplicates) from the Mendeley Oral Images Dataset:
+Evaluated on **323 biopsy-verified images from 323 unique patients** (strictly patient-disjoint splits, no pre-augmented duplicates) from the Mendeley Oral Images Dataset:
 
-| Metric | Value ($\tau = 0.50$) | Triage Operating Point ($\tau^* = 0.40$) |
+| Metric | Default Threshold ($\tau = 0.50$) | Triage Operating Point ($\tau^* = 0.40$) |
 | :--- | :---: | :---: |
 | **Accuracy** | $87.62\% \pm 2.21\%$ | — |
 | **Sensitivity (Recall)** | $89.87\% \pm 2.95\%$ | **91.05%** |
@@ -59,26 +71,26 @@ Evaluated on **323 biopsy-verified images from 323 unique patients** (patient-di
 ```text
 CAMS-Net/
 ├── configs/
-│   └── cams_net_default.yaml          # Training, CLAHE, and hyperparameter config
+│   └── cams_net_default.yaml              # Training, CLAHE, and hyperparameter configuration
 ├── splits/
-│   └── fold_indices.pkl               # Deterministic patient-disjoint 5-fold splits (seed=42)
+│   └── fold_indices.pkl                   # Deterministic patient-disjoint 5-fold splits (seed=42)
 ├── src/
-│   ├── model.py                       # Dual-stem, CAG, SLR-ResNet50, and MAAH definitions
-│   ├── preprocessing.py               # CIELAB-CLAHE + raw dual-path transforms & augmentations
-│   ├── morphology.py                  # LBP, Gabor, Sobel, 2D FFT, and Haar wavelet extractors
-│   ├── train.py                       # 5-fold cross-validation training loop with AdamW & LR finder
-│   ├── evaluate.py                    # Out-of-fold metrics, calibration (ECE/Brier), & threshold sweep
-│   └── generate_grid_gradcam.py       # Paired 4x5 raw vs. Grad-CAM lesion localization grid generator
+│   ├── model.py                           # Dual-stem, CAG, SLR-ResNet50, and MAAH definitions
+│   ├── preprocessing.py                   # CIELAB-CLAHE + raw dual-path transforms & augmentations
+│   ├── morphology.py                      # LBP, Gabor, Sobel, 2D FFT, and Haar wavelet extractors
+│   ├── train.py                           # 5-fold cross-validation training loop with AdamW & LR finder
+│   ├── evaluate.py                        # Out-of-fold metrics, calibration (ECE/Brier), & threshold sweep
+│   └── generate_grid_gradcam.py           # Paired 4x5 raw vs. Grad-CAM lesion localization grid generator
 ├── result images/
-│   ├── architecture.png               # End-to-end CAMS-Net architecture diagram
-│   ├── Fig1_Preprocessing_Comparison.png
-│   ├── Fig2_Noise_And_Edges.png
-│   ├── Fig3_Frequency_Wavelet.png
-│   ├── Fig4_Texture_Features.png
-│   ├── oral_cancer_final_journal.png  # Confusion matrix, ROC, and fold stability plots
-│   ├── journal_pipeline_and_features.png
-│   ├── oral_cancer_grid_4x5_raw.png   # 4x5 raw clinical cohort grid (2000 x 1600 px)
+│   ├── architecture.png                   # End-to-end CAMS-Net architecture diagram
+│   ├── Fig1_Preprocessing_Comparison.png  # LAB-CLAHE vs. baseline preprocessing comparison
+│   ├── Fig2_Noise_And_Edges.png           # Spatial filtering and Canny edge maps
+│   ├── Fig3_Frequency_Wavelet.png         # 2D FFT spectrum and Haar wavelet sub-bands
+│   ├── Fig4_Texture_Features.png          # LBP, Gabor, Sobel, and Laplacian texture visualizations
+│   ├── oral_cancer_final_journal.png      # Confusion matrix, ROC curve, and fold stability plots
+│   ├── journal_pipeline_and_features.png  # Step-by-step pipeline and Grad-CAM overlay illustration
+│   ├── oral_cancer_grid_4x5_raw.png       # 4x5 raw clinical cohort grid (2000 x 1600 px)
 │   └── oral_cancer_grid_4x5_predicted.png # 4x5 Grad-CAM + lesion contour grid (2000 x 1600 px)
-├── main.tex                           # IEEE JBHI LaTeX manuscript source
-├── requirements.txt                   # Python dependencies
-└── README.md
+├── main.tex                               # IEEE JBHI LaTeX manuscript source
+├── requirements.txt                       # Python dependencies
+└── README.md                              # Project documentation

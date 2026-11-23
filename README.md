@@ -1,4 +1,3 @@
-<img width="512" height="512" alt="5c82acc8-c07c-4fb1-8313-50a59f2576f5" src="https://github.com/user-attachments/assets/84d5afb1-b07c-4237-a0d0-b1d0b1f2132e" />
 # CAMS-Net: Contrast-Aware Multi-Scale Network with Morphology-Guided Training for Early Oral Malignancy Triage
 
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)

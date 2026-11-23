@@ -1,3 +1,4 @@
+<img width="512" height="512" alt="5c82acc8-c07c-4fb1-8313-50a59f2576f5" src="https://github.com/user-attachments/assets/84d5afb1-b07c-4237-a0d0-b1d0b1f2132e" />
 # CAMS-Net: Contrast-Aware Multi-Scale Network with Morphology-Guided Training for Early Oral Malignancy Triage
 
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
@@ -10,6 +11,11 @@ Official implementation, evaluation scripts, Grad-CAM interpretability tools, an
 ---
 
 ## Key Contributions
+
+<img width="512" height="512" alt="5c82acc8-c07c-4fb1-8313-50a59f2576f5" src="https://github.com/user-attachments/assets/84d5afb1-b07c-4237-a0d0-b1d0b1f2132e" />
+<img width="2000" height="1600" alt="oral_cancer_grid_4x5_raw" src="https://github.com/user-attachments/assets/d15980bc-3b61-4b4b-8ee0-b731b45ee5f5" />
+<img width="2000" height="1600" alt="oral_cancer_grid_4x5_predicted" src="https://github.com/user-attachments/assets/febddf05-5dbf-4683-a139-37ac3a7d6bd2" />
+
 
 1. **Dual-Path Preprocessing & Contrast-Aware Gate (CAG):**
    - Processes both **LAB-CLAHE enhanced** ($L^*$ luminance equalization, $\rho_{\text{clip}}=3.0$, $8\times 8$ grid) and **raw** RGB images through independent convolutional stems.

@@ -36,8 +36,7 @@ Comparison across **20 representative patient cases** (balanced across Benign an
 | Raw Clinical Inputs ($2000 \times 1600$ px) | CAMS-Net Triage Predictions & Grad-CAM Contours ($2000 \times 1600$ px) |
 | :---: | :---: |
 | <img width="100%" alt="Raw Oral Cavity Input Grid (4x5)" src="https://github.com/user-attachments/assets/d15980bc-3b61-4b4b-8ee0-b731b45ee5f5" /> | <img width="100%" alt="Predicted Triage & Grad-CAM Grid (4x5)" src="https://github.com/user-attachments/assets/febddf05-5dbf-4683-a139-37ac3a7d6bd2" /> |
-| *Spatially aligned $224 \times 224$ center-cropped raw RGB photographs showing intraoral lighting and mucosal variation.* | *Binary triage headers (`BENIGN` / `MALIGNANT`), Layer4 Grad-CAM overlays, and red–yellow contours delineating predicted malignant lesions.* |
-
+| *Spatially aligned 224 &times; 224 center-cropped raw RGB photographs showing intraoral lighting and mucosal variation.* | *Binary triage headers (`BENIGN` / `MALIGNANT`), Layer4 Grad-CAM overlays, and red–yellow contours delineating predicted malignant lesions.* |
 ---
 
 ## Performance Summary (Patient-Level 5-Fold Cross-Validation, $N=323$)
